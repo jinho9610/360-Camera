@@ -20,7 +20,7 @@ IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
-model = load_model('models/2021_02_12_16_38_25.h5')
+model = load_model('models/2021_02_23_00_30_24.h5')
 
 
 def check_mouse(ori, box, face):
@@ -141,5 +141,5 @@ def video_face_mouse_rec(load_data, input_video):
 if __name__ == '__main__':
     load_data = torch.load('data.pt')
 
-    input_video = cv2.VideoCapture('videos/360degree1.mp4')
+    input_video = cv2.VideoCapture('videos/02.23.525.mp4')
     video_face_mouse_rec(load_data, input_video)

@@ -14,6 +14,7 @@ import mtcnn
 import cv2
 import time
 import os
+from contrast_increaser import *
 
 IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 
@@ -21,7 +22,7 @@ IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
-model = load_model('models/2021_02_23_00_30_24.h5')
+model = load_model('models/2021_02_23_16_17_17.h5')
 
 
 def check_mouse(ori, box, face):
@@ -38,11 +39,12 @@ def check_mouse(ori, box, face):
         ori, mouse_rect[0], mouse_rect[1], (255, 0, 0), 1)  # 입주변 박스 그리기
 
     mouse = cv2.cvtColor(mouse, cv2.COLOR_BGR2GRAY)  # 입 사진 gray로 변경
+    mouse = ct_increase(mouse)
     mouse_input = mouse.copy().reshape(
         (1, IMG_SIZE[1], IMG_SIZE[0], 1)).astype(np.float32) / 255
     pred = model.predict(mouse_input)
-    state = 'O %.1f' if pred > 0.7 else '- %.1f'
-    print(pred[0])
+    state = 'O %.1f' if pred > 0.5 else '- %.1f'
+
     state = state % pred
 
     cv2.putText(ori, state, (mouse_rect[0][0] + int((mouse_rect[1][0] - mouse_rect[0][0]) / 4),
