@@ -34,7 +34,7 @@ def barrel_distortion(img_path):
     return distorted
 
 
-def make_distorted_imgs():
+def make_distorted_photos():
     dir_list = os.listdir('photos')
 
     for dir_name in dir_list:
@@ -51,3 +51,27 @@ def make_distorted_imgs():
             tmp = barrel_distortion(img_path)
             distored_img_path = dir_path + '\\d_' + img
             cv2.imwrite(distored_img_path, tmp)
+
+
+def make_distorted_mouses():
+    dir_list = os.listdir('mouse')
+
+    for dir_name in dir_list:
+        if dir_name == 'closed_face' or dir_name == 'opened_face':
+            dir_path = os.path.join('mouse', dir_name)
+            print(dir_name)
+
+            imgs = os.listdir(dir_path)
+            cnt = len(imgs)
+            i = 1
+            for img in imgs:
+                print(f'{i}/{cnt}')
+                if img[:2] == 'd_':
+                    continue
+
+                img_path = os.path.join(dir_path, img)
+
+                tmp = barrel_distortion(img_path)
+                distored_img_path = dir_path + '\\d_' + img
+                cv2.imwrite(distored_img_path, tmp)
+                i += 1
