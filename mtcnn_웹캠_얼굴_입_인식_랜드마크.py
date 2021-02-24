@@ -44,7 +44,11 @@ def check_mouse(ori, box, face):
         (1, IMG_SIZE[1], IMG_SIZE[0], 1)).astype(np.float32) / 255
     pred = model.predict(mouse_input)
     state = 'O %.1f' if pred > 0.5 else '- %.1f'
+<<<<<<< HEAD
 
+=======
+    # print(pred[0])
+>>>>>>> 1eac4ad2c1d8d887c937c675d8bbb5a234d51305
     state = state % pred
 
     cv2.putText(ori, state, (mouse_rect[0][0] + int((mouse_rect[1][0] - mouse_rect[0][0]) / 4),
