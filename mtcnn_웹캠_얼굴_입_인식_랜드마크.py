@@ -15,6 +15,7 @@ import cv2
 import time
 import os
 from contrast_increaser import *
+from collections import deque
 
 IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 
@@ -24,8 +25,11 @@ mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 model = load_model('models/2021_02_23_16_17_17.h5')
 
-
+dno = False
+state = 0
+cnt = 0
 def check_mouse(ori, box, face):
+    global state
     nose_x, nose_y = int(face[2][0]), int(face[2][1])
     lm_x, lm_y = int(face[3][0]), int(face[3][1])
     rm_x, rm_y = int(face[4][0]), int(face[4][1])
@@ -46,11 +50,36 @@ def check_mouse(ori, box, face):
     state = 'O %.1f' if pred > 0.5 else '- %.1f'
 
     state = state % pred
+    
+ 
+    def stacking():
+        global cnt
+        if cnt > 10:
+            cv2.putText(ori, "speaking!!!!!", (mouse_rect[0][0] + int((mouse_rect[1][0] - mouse_rect[0][0]) / 4),
+                                mouse_rect[0][1] - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+            print("speaking!")
+        q = deque()
+        if state == 'O %.1f':
+            q.append(1)
+            print("append!")
+        if state == '- %.1f':
+            q.append(0)
+        for i in q:
+            if i == 1:
+                cnt += 1
+                print("upupupupup")
+        if len(q) >20 :
+            q.popleft()
+    
+    stacking()
 
     cv2.putText(ori, state, (mouse_rect[0][0] + int((mouse_rect[1][0] - mouse_rect[0][0]) / 4),
                              mouse_rect[0][1] - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
 
     return ori
+
+
+
 
 
 def webcam_face_rec(load_data):
