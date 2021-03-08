@@ -22,7 +22,7 @@ IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
-model = load_model('models/2021_02_23_00_30_24.h5')
+model = load_model('models/2021_03_02_14_16_12.h5')
 
 class_participants = {}
 
@@ -40,8 +40,8 @@ def contrast_check_mouse(name, ori, box, face):
     ori = cv2.rectangle(
         ori, mouse_rect[0], mouse_rect[1], (255, 0, 0), 1)  # 입주변 박스 그리기
 
-    mouse = ct_increase(cv2.cvtColor(    # contrast 증가 
-        mouse, cv2.COLOR_BGR2GRAY))  # 입 사진 gray로 변경
+    #mouse = ct_increase(cv2.cvtColor(    # contrast 증가 
+    #    mouse, cv2.COLOR_BGR2GRAY))  # 입 사진 gray로 변경
     mouse_input = mouse.copy().reshape(
         (1, IMG_SIZE[1], IMG_SIZE[0], 1)).astype(np.float32) / 255
     pred = model.predict(mouse_input)
@@ -78,7 +78,7 @@ def contrast_video_face_mouse_rec(load_data, input_video):
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     output_video = cv2.VideoWriter(
-        'output_videos/output_mouse.avi', fourcc, 29.97, (w, h))
+        'output_videos/new.avi', fourcc, 29.97, (w, h))
 
     frame_num = 1
     while True:
@@ -91,7 +91,7 @@ def contrast_video_face_mouse_rec(load_data, input_video):
         print("Writing frame {} / {}".format(frame_num, length))
         frame_num += 1
 
-        img = Image.fromarray(frame)
+        img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img_cropped_list, prob_list = mtcnn(img, return_prob=True)
 
         if img_cropped_list is not None:
@@ -202,7 +202,7 @@ def video_face_mouse_rec(load_data, input_video):
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     output_video = cv2.VideoWriter(
-        'output_videos/output_mouse.avi', fourcc, 29.97, (w, h))
+        'output_videos/new.avi', fourcc, 29.97, (w, h))
 
     frame_num = 1
     while True:
@@ -281,7 +281,7 @@ def video_face_mouse_rec(load_data, input_video):
 
 
 if __name__ == '__main__':
-    load_data = torch.load('data.pt')
+    load_data = torch.load('data2.pt')
 
-    input_video = cv2.VideoCapture('videos/360degree1.mp4')
+    input_video = cv2.VideoCapture('videos/1.mp4')
     contrast_video_face_mouse_rec(load_data, input_video)

@@ -27,7 +27,7 @@ def video_face_rec(load_data, input_video):
     h = int(input_video.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    output_video = cv2.VideoWriter('output_videos/output.avi', fourcc, 29.97, (w, h))
+    output_video = cv2.VideoWriter('output_videos/output1.avi', fourcc, 29.97, (w, h))
 
     frame_num = 1
     while True:
@@ -40,7 +40,7 @@ def video_face_rec(load_data, input_video):
         print("Writing frame {} / {}".format(frame_num, length))
         frame_num += 1
 
-        img = Image.fromarray(frame)
+        img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img_cropped_list, prob_list = mtcnn(img, return_prob=True)
         
         if img_cropped_list is not None:
@@ -99,7 +99,7 @@ def video_face_rec(load_data, input_video):
     
 
 if __name__ == '__main__':
-    load_data = torch.load('data.pt') 
+    load_data = torch.load('data2.pt') 
 
-    input_video = cv2.VideoCapture('videos/360degree1.mp4')
+    input_video = cv2.VideoCapture('videos/1.mp4')
     video_face_rec(load_data, input_video)
