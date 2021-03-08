@@ -20,8 +20,9 @@ IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
-resnet = InceptionResnetV1(pretrained='vggface2').eval()
-model = load_model('models/2021_02_23_00_15_13.h5')
+#resnet = InceptionResnetV1(pretrained='vggface2').eval()
+resnet = torch.load('new_res.pt').eval()
+model = load_model('models/2021_03_05_13_51_54.h5')
 
 
 def check_mouse(ori, box, face):
@@ -108,11 +109,9 @@ def img_face_mouse_rec(load_data, img_path):
 
 
 if __name__ == '__main__':
-    load_data = torch.load('data2.pt')
+    load_data = torch.load('new_data2.pt')
     embedding_list = load_data[0]
     name_list = load_data[1]
 
-    print(load_data)
-
     #img_face_mouse_rec(load_data, 'photos/hyeontae/HT.jpg')
-    img_face_mouse_rec(load_data, 'not_face/ys.png')
+    img_face_mouse_rec(load_data, 'not_face/33.jpg')

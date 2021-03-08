@@ -18,8 +18,8 @@ mtcnn0 = MTCNN(image_size=240, margin=0, keep_all=False,
                min_face_size=40)  # keep_all=False
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
-resnet = InceptionResnetV1(pretrained='vggface2').eval()
-
+resnet1 = InceptionResnetV1(pretrained='vggface2').eval()
+resnet = torch.load('new_res.pt').eval()
 
 dataset = datasets.ImageFolder('photos')  # photos folder path
 # dataset = datasets.ImageFolder('photos')  # photos folder path
@@ -52,7 +52,9 @@ def train():
     # print(type(data))
     # print(type(data[0]), type(data[1]))
     # print(data[1])
-    torch.save(data, 'data2.pt')  # saving data.pt file
+    torch.save(data, 'new_data2.pt')  # saving data.pt file
+    print(len(data[0]))
+    print(len(data[1]))
     # torch.save(data, 'data.pt')  # saving data.pt file
 
 
