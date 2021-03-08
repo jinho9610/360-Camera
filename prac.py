@@ -1,7 +1,6 @@
-from PIL import Image
-from PIL import ImageEnhance
+import cv2
 
-img = Image.open('mouse/opened_mouse/197.jpg')
-
-enhancer = ImageEnhance.Brightness(img)
-enhancer.enhance(2).show()
+img = cv2.imread('chin.png')
+img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+cv2.imshow('img', img)
+cv2.waitKey(0)
