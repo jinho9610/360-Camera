@@ -1,6 +1,6 @@
 import cv2
 
-img = cv2.imread('chin.png')
-img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-cv2.imshow('img', img)
-cv2.waitKey(0)
+img = cv2.imread(
+    'trans_learn_dataset/hyeontae/f_KakaoTalk_20210308_172834566.jpg')
+
+print(img.shape)

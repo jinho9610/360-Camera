@@ -22,7 +22,7 @@ IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
 #resnet = InceptionResnetV1(pretrained='vggface2').eval()
-resnet = torch.load('new_res.pt')
+resnet = torch.load('new_res.pt').eval()
 model = load_model('models/2021_03_05_13_51_54.h5')
 
 class_participants = {}
@@ -92,11 +92,11 @@ def contrast_video_face_mouse_rec(load_data, input_video):
         print("Writing frame {} / {}".format(frame_num, length))
         frame_num += 1
 
-        img = Image.fromarray(frame)
-        img_cropped_list, prob_list = mtcnn(img, return_prob=True)
+        img0 = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        img_cropped_list, prob_list = mtcnn(img0, return_prob=True)
 
         if img_cropped_list is not None:
-            boxes, _, faces = mtcnn.detect(img, landmarks=True)
+            boxes, _, faces = mtcnn.detect(img0, landmarks=True)
 
             for i, prob in enumerate(prob_list):
                 if prob > 0.90:
@@ -141,9 +141,6 @@ def contrast_video_face_mouse_rec(load_data, input_video):
                         frame = contrast_check_mouse(name, frame, box, face)
 
         output_video.write(frame)
-        print(class_participants)
-        print(len(class_participants['jinho']), class_participants['jinho'].count(
-            'o'), class_participants['jinho'].count('x'))
 
         k = cv2.waitKey(1)
         if k % 256 == 27:  # ESC

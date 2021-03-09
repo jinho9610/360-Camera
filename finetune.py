@@ -8,10 +8,10 @@ from torchvision import datasets, transforms
 import numpy as np
 import os
 
-data_dir = 'photos'
+data_dir = 'trans_learn_dataset'
 
-batch_size = 32
-epochs = 25
+batch_size = 3
+epochs = 10
 workers = 0 if os.name == 'nt' else 8
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')

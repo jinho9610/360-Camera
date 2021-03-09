@@ -20,7 +20,7 @@ IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
-#resnet = InceptionResnetV1(pretrained='vggface2').eval()
+# resnet = InceptionResnetV1(pretrained='vggface2').eval()
 resnet = torch.load('new_res.pt').eval()
 model = load_model('models/2021_03_05_13_51_54.h5')
 
@@ -56,7 +56,7 @@ def img_face_mouse_rec(load_data, img_path):
     img0 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     print(type(img))
-    # img = cv2.resize(img, dsize=(500, 800)) #이걸 왜 쳐하고 있었던거지
+    # img0 = cv2.resize(img, dsize=(512, 512))  # 이걸 왜 쳐하고 있었던거지
     img_cropped_list, prob_list = mtcnn(img0, return_prob=True)
     print(img_cropped_list)
     print(1)
@@ -109,9 +109,12 @@ def img_face_mouse_rec(load_data, img_path):
 
 
 if __name__ == '__main__':
-    load_data = torch.load('new_data2.pt')
+    load_data = torch.load('new_data3.pt')
     embedding_list = load_data[0]
     name_list = load_data[1]
 
-    #img_face_mouse_rec(load_data, 'photos/hyeontae/HT.jpg')
-    img_face_mouse_rec(load_data, 'not_face/33.jpg')
+    # img_face_mouse_rec(load_data, 'photos/hyeontae/HT.jpg')
+    img_face_mouse_rec(
+        load_data, 'not_face/11.png')
+    # img_face_mouse_rec(
+    #     load_data, 'trans_learn_dataset/hyeontae/KakaoTalk_20210225_162557523_01.jpg')
