@@ -15,13 +15,28 @@ import cv2
 import time
 import os
 from distortion import *
+import torch.nn as nn
+import torch.optim as optim
+from torch.optim import lr_scheduler
+
+
+class Flatten(nn.Module):
+    def __init__(self):
+        super(Flatten, self).__init__()
+
+    def forward(self, x):
+        x = x.view(x.size(0), -1)
+        return x
+
 
 IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
 # resnet = InceptionResnetV1(pretrained='vggface2').eval()
-resnet = torch.load('new_res.pt').eval()
+#resnet = torch.load('new_res.pt').eval()
+#resnet = torch.load('4xxxfinetuned_IRV1.pt').eval()
+resnet = torch.load('new_res2.pt').eval()
 model = load_model('models/2021_03_05_13_51_54.h5')
 
 
@@ -109,12 +124,12 @@ def img_face_mouse_rec(load_data, img_path):
 
 
 if __name__ == '__main__':
-    load_data = torch.load('new_data3.pt')
+    load_data = torch.load('new_data8.pt')
     embedding_list = load_data[0]
     name_list = load_data[1]
 
     # img_face_mouse_rec(load_data, 'photos/hyeontae/HT.jpg')
     img_face_mouse_rec(
-        load_data, 'not_face/11.png')
+        load_data, 'not_face/3men.jpg')
     # img_face_mouse_rec(
     #     load_data, 'trans_learn_dataset/hyeontae/KakaoTalk_20210225_162557523_01.jpg')

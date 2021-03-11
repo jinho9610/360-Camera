@@ -278,6 +278,8 @@ def video_face_mouse_rec(load_data, input_video):
     input_video.release()
 
 
+
+
 if __name__ == '__main__':
     load_data = torch.load('new_data2.pt')
 

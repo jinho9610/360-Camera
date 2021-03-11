@@ -10,7 +10,7 @@ import os
 
 data_dir = 'trans_learn_dataset'
 
-batch_size = 3
+batch_size = 32
 epochs = 10
 workers = 0 if os.name == 'nt' else 8
 
@@ -47,7 +47,12 @@ resnet = InceptionResnetV1(
     num_classes=len(dataset.class_to_idx)
 ).to(device)
 
-print(resnet)
+i = 0
+for params in resnet.parameters():
+    i += 1
+    if i <= 375:
+        params.requires_grad = False
+
 
 optimizer = optim.Adam(resnet.parameters(), lr=0.001)
 scheduler = MultiStepLR(optimizer, [5, 10])
@@ -57,6 +62,7 @@ trans = transforms.Compose([
     transforms.ToTensor(),
     fixed_image_standardization
 ])
+
 dataset = datasets.ImageFolder(data_dir + '_cropped', transform=trans)
 img_inds = np.arange(len(dataset))
 np.random.shuffle(img_inds)
@@ -113,6 +119,6 @@ for epoch in range(epochs):
     )
 
 print(resnet.last_linear)
-torch.save(resnet, 'new_res.pt')
+torch.save(resnet, 'new_res2.pt')
 
 writer.close()
