@@ -34,9 +34,9 @@ IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
 # resnet = InceptionResnetV1(pretrained='vggface2').eval()
-#resnet = torch.load('new_res.pt').eval()
-#resnet = torch.load('4xxxfinetuned_IRV1.pt').eval()
-resnet = torch.load('new_res2.pt').eval()
+# resnet = torch.load('new_res.pt').eval()
+# resnet = torch.load('4xxxfinetuned_IRV1.pt').eval()
+resnet = torch.load('e50_160_finetuned_IRV1.pt').eval()
 model = load_model('models/2021_03_05_13_51_54.h5')
 
 
@@ -70,23 +70,17 @@ def img_face_mouse_rec(load_data, img_path):
     img = cv2.imread(img_path)
     img0 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    print(type(img))
-    # img0 = cv2.resize(img, dsize=(512, 512))  # 이걸 왜 쳐하고 있었던거지
     img_cropped_list, prob_list = mtcnn(img0, return_prob=True)
-    print(img_cropped_list)
-    print(1)
 
     if img_cropped_list is not None:
-        print(2)
         boxes, _, faces = mtcnn.detect(img0, landmarks=True)
 
         for i, prob in enumerate(prob_list):
-            print(3)
             if prob > 0.90:
+                box = boxes[i]
                 emb = resnet(img_cropped_list[i].unsqueeze(0)).detach()
 
                 dist_list = []  # list of matched distances, minimum distance is used to identify the person
-                print(dist_list)
 
                 for idx, emb_db in enumerate(embedding_list):
                     dist = torch.dist(emb, emb_db).item()
@@ -97,8 +91,7 @@ def img_face_mouse_rec(load_data, img_path):
                     min_dist)  # get minumum dist index
                 # get name corrosponding to minimum dist
                 name = name_list[min_dist_idx]
-
-                box = boxes[i]
+                print(name)
 
                 # original_frame = frame.copy() # storing copy of frame before drawing on it
 
@@ -124,12 +117,16 @@ def img_face_mouse_rec(load_data, img_path):
 
 
 if __name__ == '__main__':
-    load_data = torch.load('new_data8.pt')
+    load_data = torch.load('new_data13.pt')
     embedding_list = load_data[0]
     name_list = load_data[1]
 
     # img_face_mouse_rec(load_data, 'photos/hyeontae/HT.jpg')
-    img_face_mouse_rec(
-        load_data, 'not_face/3men.jpg')
+    #p = 'data/train/hyeontae/rotated_f_5t_hyeontae5.jpg'
+    p = 'not_face/3men.jpg'
+    img = cv2.imread(p)
+    print(img.shape)
+
+    img_face_mouse_rec(load_data, p)
     # img_face_mouse_rec(
     #     load_data, 'trans_learn_dataset/hyeontae/KakaoTalk_20210225_162557523_01.jpg')

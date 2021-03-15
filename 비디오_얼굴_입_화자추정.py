@@ -16,13 +16,14 @@ import time
 import os
 from contrast_increaser import *
 from collections import deque
+from trans_util import *
 
 IMG_SIZE = (34, 26)  # 입 이미지의 가로, 세로 사이즈
 
 mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
               min_face_size=40)  # keep_all=True
 #resnet = InceptionResnetV1(pretrained='vggface2').eval()
-resnet = torch.load('new_res.pt').eval()
+resnet = torch.load('e50_160_finetuned_IRV1.pt').eval()
 model = load_model('models/2021_03_05_13_51_54.h5')
 
 class_participants = {}
@@ -278,10 +279,8 @@ def video_face_mouse_rec(load_data, input_video):
     input_video.release()
 
 
-
-
 if __name__ == '__main__':
-    load_data = torch.load('new_data2.pt')
+    load_data = torch.load('new_data13.pt')
 
     input_video = cv2.VideoCapture('videos/525_3people.MP4')
     contrast_video_face_mouse_rec(load_data, input_video)
