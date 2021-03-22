@@ -1,6 +1,11 @@
-import cv2
+import torch
+import torch.nn as nn
 
-img = cv2.imread(
-    'trans_learn_dataset/hyeontae/f_KakaoTalk_20210308_172834566.jpg')
+m = nn.Softmax(dim=2)
+input = torch.randn(2, 3)
+output = m(input)
 
-print(img.shape)
+print('input := == == == == == == == == == == == == == == ===')
+print(input)
+print('output := == == == == == == == == == == == == == == ===')
+print(output)

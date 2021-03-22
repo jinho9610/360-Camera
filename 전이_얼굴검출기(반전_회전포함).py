@@ -23,7 +23,7 @@ mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
 dest_dir = 'data'
-angle_list = [-10, 5, 10]
+angle_list = [-10, -5, -3, 2, 7, 9]
 
 
 def collate_fn(x):

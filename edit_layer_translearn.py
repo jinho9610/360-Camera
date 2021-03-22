@@ -28,7 +28,7 @@ data_transforms = {
     ]),
 }
 
-batch_size = 32
+batch_size = 64
 
 # directory where the dataset exists, this has 'train', 'val' directory inside
 data_dir = 'data'
@@ -57,8 +57,8 @@ IRV1 = InceptionResnetV1(
 
 layer_list = list(IRV1.children())[-5:]
 IRV1 = nn.Sequential(*list(IRV1.children())[:-5])
-for param in IRV1.parameters():
-    param.requires_grad = False
+# for param in IRV1.parameters():
+#     param.requires_grad = False
 
 
 class Flatten(nn.Module):
@@ -79,7 +79,7 @@ class normalize(nn.Module):
         return x
 
 
-# make classfication(?) layer
+# # make classfication(?) layer
 IRV1.avgpool_1a = nn.AdaptiveAvgPool2d(output_size=1)
 IRV1.dropout = nn.Dropout(0.6)
 IRV1.last_linear = nn.Sequential(
@@ -162,7 +162,7 @@ epochs = int(input())
 IRV1, FT_losses = train_model(
     IRV1, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=epochs)
 
-torch.save(IRV1, 'e50_160_finetuned_IRV1.pt')  # 모델 저장하기
+torch.save(IRV1, 'fully_trained_e50_160_finetuned_IRV1.pt')  # 모델 저장하기
 print(IRV1.last_linear)
 plt.figure(figsize=(10, 5))
 plt.title("FRT Loss During Training")

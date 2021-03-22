@@ -21,7 +21,7 @@ from trans_util import *
 mtcnn0 = MTCNN(image_size=240, margin=0, keep_all=False,
                min_face_size=40)  # keep_all=False
 
-resnet = torch.load('e50_160_finetuned_IRV1.pt').eval()
+resnet = torch.load('fully_trained_e50_160_finetuned_IRV1.pt').eval()
 
 dataset = datasets.ImageFolder('data/train')  # photos folder path
 # accessing names of peoples from folder names

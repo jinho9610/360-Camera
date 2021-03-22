@@ -36,7 +36,7 @@ mtcnn = MTCNN(image_size=240, margin=0, keep_all=True,
 # resnet = InceptionResnetV1(pretrained='vggface2').eval()
 # resnet = torch.load('new_res.pt').eval()
 # resnet = torch.load('4xxxfinetuned_IRV1.pt').eval()
-resnet = torch.load('e50_160_finetuned_IRV1.pt').eval()
+resnet = torch.load('fully_trained_e50_160_finetuned_IRV1.pt').eval()
 model = load_model('models/2021_03_05_13_51_54.h5')
 
 
@@ -123,7 +123,8 @@ if __name__ == '__main__':
 
     # img_face_mouse_rec(load_data, 'photos/hyeontae/HT.jpg')
     #p = 'data/train/hyeontae/rotated_f_5t_hyeontae5.jpg'
-    p = 'not_face/3men.jpg'
+    p = 'not_face/11.png'
+    #p = 'photos/hyeontae/f_KakaoTalk_20210310_225500396.jpg'
     img = cv2.imread(p)
     print(img.shape)
 
